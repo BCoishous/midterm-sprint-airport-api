@@ -3,6 +3,10 @@ package com.MidtermSprint.airport_api.controller;
 import com.MidtermSprint.airport_api.model.Passenger;
 import com.MidtermSprint.airport_api.repository.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +20,15 @@ public class PassengerController {
     private PassengerRepository passengerRepository;
 
     @GetMapping
-    public List<Passenger> getAllPassengers() {
-        return passengerRepository.findAll();
-    }
+    public Page<Passenger> getAllPassengers(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "id") String sort,
+        @RequestParam(defaultValue = "asc") String direction) {
+    Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
+    return passengerRepository.findAll(pageable);
+}
 
     @GetMapping("/{id}")
     public ResponseEntity<Passenger> getPassengerById(@PathVariable Long id) {
