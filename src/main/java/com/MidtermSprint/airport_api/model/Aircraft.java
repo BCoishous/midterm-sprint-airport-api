@@ -2,6 +2,9 @@ package com.MidtermSprint.airport_api.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "aircraft")
@@ -15,6 +18,7 @@ public class Aircraft {
     private String airlineName;
     private int numberOfPassengers;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
         name = "aircraft_passengers",

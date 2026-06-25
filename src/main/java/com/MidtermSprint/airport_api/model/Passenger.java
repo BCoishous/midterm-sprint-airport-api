@@ -1,6 +1,7 @@
 package com.MidtermSprint.airport_api.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "passengers")
@@ -17,6 +18,9 @@ public class Passenger {
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
+
+    @ManyToMany(mappedBy = "passengers")
+    private List<Aircraft> aircraft;
 
     public Passenger() {}
 
@@ -38,4 +42,6 @@ public class Passenger {
     public void setLastName(String lastName) { this.lastName = lastName; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
     public void setCity(City city) { this.city = city; }
+    public List<Aircraft> getAircraft() { return aircraft; }
+    public void setAircraft(List<Aircraft> aircraft) { this.aircraft = aircraft; }
 }
